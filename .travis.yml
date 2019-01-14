@@ -3,29 +3,16 @@ services:
   - docker
 
 before_install:
-  - cd client
-  - docker build -t araxis/react-test -f ./Dockerfile.dev .
-  - cd ../
+  - docker build -t araxis/react-test -f ./client/Dockerfile.dev ./client
 
 script:
   - docker run araxis/react-test npm test -- --coverage
 
 after_success:
-  - cd client
-  - docker build -t araxis/multi-client ./client .
-  - cd ../
-
-  - cd nginx
-  - docker build -t araxis/multi-nginx  ./nginx  .
-  - cd ../
-
-  - cd server
-  - docker build -t araxis/multi-server ./server .
-  - cd ../
-
-  - cd worker
-  - docker build -t araxis/multi-worker ./worker .
-  - cd ../
+  - docker build -t araxis/multi-client ./client ./client
+  - docker build -t araxis/multi-nginx  ./nginx  ./nginx
+  - docker build -t araxis/multi-server ./server ./server
+  - docker build -t araxis/multi-worker ./worker ./worker
 
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
 
