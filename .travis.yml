@@ -11,10 +11,21 @@ script:
   - docker run araxis/react-test npm test -- --coverage
 
 after_success:
+  - cd client
   - docker build -t araxis/multi-client ./client .
+  - cd ../
+
+  - cd nginx
   - docker build -t araxis/multi-nginx  ./nginx  .
+  - cd ../
+
+  - cd server
   - docker build -t araxis/multi-server ./server .
+  - cd ../
+
+  - cd worker
   - docker build -t araxis/multi-worker ./worker .
+  - cd ../
 
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
 
