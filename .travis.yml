@@ -9,10 +9,10 @@ script:
   - docker run araxis/react-test npm test -- --coverage
 
 after_success:
-  - docker build -t araxis/multi-client ./client ./client
-  - docker build -t araxis/multi-nginx  ./nginx  ./nginx
-  - docker build -t araxis/multi-server ./server ./server
-  - docker build -t araxis/multi-worker ./worker ./worker
+  - docker build -t araxis/multi-client -f ./client/Dockerfile ./client
+  - docker build -t araxis/multi-nginx  -f ./nginx/Dockerfile  ./nginx
+  - docker build -t araxis/multi-server -f ./server/Dockerfile ./server
+  - docker build -t araxis/multi-worker -f ./worker/Dockerfile ./worker
 
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
 
